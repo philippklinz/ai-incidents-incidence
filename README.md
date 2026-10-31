@@ -76,7 +76,7 @@ Use it to explore how assumptions affect a rough estimate—not to draw conclusi
 
 The original discussion also considered daily action volumes (e.g. 1,000 actions per narrow-definition agent or 20,000 per broad-definition agent). Those figures are **not used** in the simulator's current calculations.
 
-And if you read this far: you've earned the *medal of reading weird posts on YouTube*.
+And if you read this far: you've earned the *medal of reading weird repos on GitHub*.
 
 ## License
 
