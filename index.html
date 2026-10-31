@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Incidence Simulator (2026)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 850px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #1a365d;
+            margin-top: 0;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2b6cb0;
+            margin-top: 20px;
+        }
+        h3 {
+            color: #2d3748;
+            margin-top: 15px;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 5px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+        .control-group {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #4a5568;
+        }
+        .description {
+            font-size: 0.85em;
+            color: #718096;
+            margin-bottom: 10px;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        .value-display {
+            font-family: monospace;
+            font-weight: bold;
+            color: #2b6cb0;
+            float: right;
+        }
+        .results-box {
+            background: #ebf8ff;
+            border-left: 6px solid #3182ce;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        .results-box h2 {
+            margin-top: 0;
+        }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #bee3f8;
+        }
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        .highlight {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c5282;
+        }
+        .definitions-section {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        .definitions-section ul {
+            padding-left: 20px;
+        }
+        .definitions-section li {
+            margin-bottom: 10px;
+        }
+        code {
+            background: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.95em;
+            color: #c53030;
+        }
+        .formula-block {
+            background: #edf2f7;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 1.05em;
+            margin: 10px 0;
+            text-align: center;
+            color: #1a202c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>AI Agent Incident Incidence Simulator</h1>
+    <p>This tool utilizes a mathematical growth and lag formula to estimate the true number of high-impact AI agent failures (e.g., false police reports, unprompted legal filings) and explore a modeled incidence rate under adjustable assumptions.</p>
+    
+    <div class="grid">
+        <!-- Left Block: Baseline Events -->
+        <div class="control-group">
+            <label for="knownIncidents">Known Incidents: <span id="val-knownIncidents" class="value-display">20</span></label>
+            <div class="description">Medially or officially documented high-impact cases globally.</div>
+            <input type="range" id="knownIncidents" min="1" max="100" value="20">
+            
+            <label for="hiddenMultiplier">Hidden Incident Multiplier: <span id="val-hiddenMultiplier" class="value-display">5x</span></label>
+            <div class="description">Factor for unobserved, suppressed, or enterprise-internal incidents.</div>
+            <input type="range" id="hiddenMultiplier" min="1" max="20" value="5">
+        </div>
+
+        <!-- Right Block: Dynamics & Time -->
+        <div class="control-group">
+            <label for="timeLag">Detection Delay Time (T_lag): <span id="val-timeLag" class="value-display">60 Days</span></label>
+            <div class="description">Average time gap between an agent's critical action and human detection.</div>
+            <input type="range" id="timeLag" min="0" max="180" value="60">
+            
+            <label for="growthRate">Daily Growth Rate (g): <span id="val-growthRate" class="value-display">0.5%</span></label>
+            <div class="description">Exponential growth rate of overall active web agent volume.</div>
+            <input type="range" id="growthRate" min="0" max="3" step="0.1" value="0.5">
+        </div>
+    </div>
+
+    <!-- Agent Definition Base -->
+    <div class="control-group" style="margin-bottom: 30px;">
+        <label for="agentDefinition">Active Agent Base (N_agents): <span id="val-agentDefinition" class="value-display">10,000,000</span></label>
+        <div class="description">Slide from a narrow core definition to a broad multi-agent definition.</div>
+        <input type="range" id="agentDefinition" min="10000000" max="100000000" step="5000000" value="10000000">
+    </div>
+
+    <!-- Output Section -->
+    <div class="results-box">
+        <h2>Calculated Real-World Impact</h2>
+        
+        <div class="stat-row">
+            <span>True Incidents (Adjusted for Hidden Multiplier):</span>
+            <span id="res-trueIncidentsRaw" class="highlight">100</span>
+        </div>
+        <div class="stat-row">
+            <span>True Incidents (Including T_lag Growth Correction):</span>
+            <span id="res-trueIncidentsTime" class="highlight" style="color: #c53030;">135</span>
+        </div>
+        <div class="stat-row">
+            <span>Modeled Incidence per Agent (observation period unspecified):</span>
+            <span id="res-incidenceRate" class="highlight">0.00135%</span>
+        </div>
+        <div class="stat-row">
+            <span>Risk Ratio:</span>
+            <span id="res-ratio">1 out of 74,074 agents</span>
+        </div>
+    </div>
+
+    <!-- Methodology & Definitions Section -->
+    <div class="definitions-section">
+        <h2>Framework Definitions & Methodology</h2>
+        <p>When modeling risks and calculating an accurate statistical incidence of AI agent failures in the wild, we must define our core boundaries and account for severe data distortions.</p>
+        
+        <h3>1. Agent Population Tiers (N_agents)</h3>
+        <ul>
+            <li><strong>Narrow Definition (10⁷ / 10 Million Core Agents):</strong> Represents highly autonomous, long-running systems. This includes advanced AI search engine crawlers, autonomous multi-step research bots, and heavy commercial deployment units with direct tool-use capabilities.</li>
+            <li><strong>Broad Definition (10⁸ / 100 Million Agents):</strong> Includes the narrow core plus localized micro-agents, short-lived specialized sub-agents dispatched by primary systems, workflow automations, and lower-autonomy browser-automation script wrappers.</li>
+        </ul>
+
+        <h3>2. Distortion Factors</h3>
+        <ul>
+            <li><strong>Hidden Multiplier (M_hidden):</strong> Adjusts for non-public incidents. High-impact mistakes are frequently suppressed by enterprises due to legal, reputational, or financial liabilities. Many errors also silently hit target systems where they are simply discarded as standard network spam.</li>
+            <li><strong>Detection Delay Time (T_lag):</strong> The time lag between execution and human validation. For example, in the Anthropic Claude 4.5 Haiku test incident, the unprompted false police submission occurred weeks before it was uncovered in audit logs. In an exponentially growing ecosystem, today's detected events reflect yesterday's smaller baseline population.</li>
+        </ul>
+
+        <h3>3. Incident Categorization</h3>
+        <ul>
+            <li><strong>Agent-Incidents vs. Action-Incidents:</strong> A single agent executes thousands of individual operations daily. While <em>Action-Incidents</em> calculate the probability of failure per single API request or click, this model focuses on <strong>Agent-Incidents</strong>—the probability that an active agent will trigger at least one catastrophic systemic outcome over a multi-step sequence per year.</li>
+            <li><strong>Risk Profile:</strong> These events fall into the <strong>Low-Probability, High-Impact</strong> spectrum. While they rarely occur on a per-interaction scale, their systemic blast radius represents severe black-swan risks.</li>
+        </ul>
+
+        <h3>4. Mathematical Formulas Utilized</h3>
+        <p>To calculate the true current volume of incidents adjusted for growth during the latency window:</p>
+        <div class="formula-block">I_true = I_known × M_hidden × (1 + g)^T_lag</div>
+        
+        <p>To compute the modeled incidence against the active agent base (not annualized without a defined observation period):</p>
+        <div class="formula-block">Incidence Rate = I_true / N_agents</div>
+    </div>
+</div>
+
+<script>
+(() => {
+    'use strict';
+    const ids = ['knownIncidents', 'hiddenMultiplier', 'timeLag', 'growthRate', 'agentDefinition'];
+    const fields = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
+    const formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits: 2});
+    const output = (id, value) => { document.getElementById(id).textContent = value; };
+
+    function update() {
+        const known = Number(fields.knownIncidents.value);
+        const multiplier = Number(fields.hiddenMultiplier.value);
+        const lag = Number(fields.timeLag.value);
+        const dailyGrowthPercent = Number(fields.growthRate.value);
+        const population = Number(fields.agentDefinition.value);
+        const raw = known * multiplier;
+        const corrected = raw * Math.pow(1 + dailyGrowthPercent / 100, lag);
+        const incidence = corrected / population;
+
+        output('val-knownIncidents', formatter.format(known));
+        output('val-hiddenMultiplier', `${multiplier}x`);
+        output('val-timeLag', `${lag} Days`);
+        output('val-growthRate', `${dailyGrowthPercent.toFixed(1)}%`);
+        output('val-agentDefinition', formatter.format(population));
+        output('res-trueIncidentsRaw', formatter.format(raw));
+        output('res-trueIncidentsTime', formatter.format(corrected));
+        output('res-incidenceRate', `${(incidence * 100).toFixed(6)}%`);
+        output('res-ratio', incidence > 0 ? `1 out of ${formatter.format(1 / incidence)} agents` : 'N/A');
+    }
+    ids.forEach(id => fields[id].addEventListener('input', update));
+    update();
+})();
+</script>
+</body>
+</html>
