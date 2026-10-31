@@ -135,28 +135,37 @@
 
 <div class="container">
     <h1>AI Agent Incident Incidence Simulator</h1>
-    <p>This tool utilizes a mathematical growth and lag formula to estimate the true number of high-impact AI agent failures (e.g., false police reports, unprompted legal filings) and explore a modeled incidence rate under adjustable assumptions.</p>
+    <p>A small thought experiment for exploring possible AI agent incident counts under adjustable assumptions. Results are hypothetical, not measured risk estimates.</p>
     
+    <div class="control-group" style="margin-bottom:20px;">
+      <label for="scenario">Starting scenario</label>
+      <div class="description">Source counts use different definitions and are not directly comparable. Selecting a scenario only changes the known-incident input.</div>
+      <select id="scenario" style="width:100%;padding:10px;border:1px solid #cbd5e0;border-radius:6px;background:white;">
+        <option value="20">Original thought experiment — 20 (assumed, not verified)</option>
+        <option value="59">Manifold Agent Incident Ledger — 59 publicly disclosed (broader scope)</option>
+        <option value="custom">Custom count</option>
+      </select>
+    </div>
     <div class="grid">
         <!-- Left Block: Baseline Events -->
         <div class="control-group">
             <label for="knownIncidents">Known Incidents: <span id="val-knownIncidents" class="value-display">20</span></label>
-            <div class="description">Medially or officially documented high-impact cases globally.</div>
-            <input type="range" id="knownIncidents" min="1" max="100" value="20">
+            <div class="description">User-defined count of publicly known cases. Source datasets may include different severities and event types.</div>
+            <input type="range" id="knownIncidents" min="1" max="500" value="20">
             
             <label for="hiddenMultiplier">Hidden Incident Multiplier: <span id="val-hiddenMultiplier" class="value-display">5x</span></label>
-            <div class="description">Factor for unobserved, suppressed, or enterprise-internal incidents.</div>
+            <div class="description">Hypothetical multiplier for cases not publicly reported. No reliable multiplier is established.</div>
             <input type="range" id="hiddenMultiplier" min="1" max="20" value="5">
         </div>
 
         <!-- Right Block: Dynamics & Time -->
         <div class="control-group">
-            <label for="timeLag">Detection Delay Time (T_lag): <span id="val-timeLag" class="value-display">60 Days</span></label>
-            <div class="description">Average time gap between an agent's critical action and human detection.</div>
+            <label for="timeLag">Assumed Lag (T_lag): <span id="val-timeLag" class="value-display">60 Days</span></label>
+            <div class="description">Hypothetical lag in days. Manifold reports 70 days median from first action to PUBLIC DISCLOSURE (43 dated cases), not time to detection.</div>
             <input type="range" id="timeLag" min="0" max="180" value="60">
             
             <label for="growthRate">Daily Growth Rate (g): <span id="val-growthRate" class="value-display">0.5%</span></label>
-            <div class="description">Exponential growth rate of overall active web agent volume.</div>
+            <div class="description">Assumed daily growth in agent activity. Not an observed global growth rate.</div>
             <input type="range" id="growthRate" min="0" max="3" step="0.1" value="0.5">
         </div>
     </div>
@@ -164,61 +173,71 @@
     <!-- Agent Definition Base -->
     <div class="control-group" style="margin-bottom: 30px;">
         <label for="agentDefinition">Active Agent Base (N_agents): <span id="val-agentDefinition" class="value-display">10,000,000</span></label>
-        <div class="description">Slide from a narrow core definition to a broad multi-agent definition.</div>
+        <div class="description">Hypothetical active agent population; no validated global census is used.</div>
         <input type="range" id="agentDefinition" min="10000000" max="100000000" step="5000000" value="10000000">
     </div>
 
     <!-- Output Section -->
     <div class="results-box">
-        <h2>Calculated Real-World Impact</h2>
+        <h2>Scenario Outputs (Hypothetical)</h2>
         
         <div class="stat-row">
-            <span>True Incidents (Adjusted for Hidden Multiplier):</span>
+            <span>Estimated incidents after hidden multiplier:</span>
             <span id="res-trueIncidentsRaw" class="highlight">100</span>
         </div>
         <div class="stat-row">
-            <span>True Incidents (Including T_lag Growth Correction):</span>
+            <span>Estimated incidents with lag-growth factor:</span>
             <span id="res-trueIncidentsTime" class="highlight" style="color: #c53030;">135</span>
         </div>
         <div class="stat-row">
-            <span>Modeled Incidence per Agent (observation period unspecified):</span>
+            <span>Incidents / assumed active agents (not annualized):</span>
             <span id="res-incidenceRate" class="highlight">0.00135%</span>
         </div>
         <div class="stat-row">
-            <span>Risk Ratio:</span>
+            <span>Equivalent ratio (not an individual probability):</span>
             <span id="res-ratio">1 out of 74,074 agents</span>
         </div>
+      <p style="font-size:.85em;margin-bottom:0;color:#4a5568;">These are scenario arithmetic outputs, not measured incident probabilities. Incident counts may include repeat events by the same agent; the denominator is an assumed population, not verified agent-years of exposure.</p>
     </div>
 
     <!-- Methodology & Definitions Section -->
     <div class="definitions-section">
         <h2>Framework Definitions & Methodology</h2>
-        <p>When modeling risks and calculating an accurate statistical incidence of AI agent failures in the wild, we must define our core boundaries and account for severe data distortions.</p>
+        <p>This deliberately simple model explores how different assumptions change a result. It is not a scientific incidence study or a forecast.</p>
         
         <h3>1. Agent Population Tiers (N_agents)</h3>
         <ul>
-            <li><strong>Narrow Definition (10⁷ / 10 Million Core Agents):</strong> Represents highly autonomous, long-running systems. This includes advanced AI search engine crawlers, autonomous multi-step research bots, and heavy commercial deployment units with direct tool-use capabilities.</li>
-            <li><strong>Broad Definition (10⁸ / 100 Million Agents):</strong> Includes the narrow core plus localized micro-agents, short-lived specialized sub-agents dispatched by primary systems, workflow automations, and lower-autonomy browser-automation script wrappers.</li>
+            <li><strong>Narrow Definition (10⁷ / 10 Million Core Agents):</strong> Hypothetical population representing highly autonomous, long-running systems. This includes advanced AI search engine crawlers, autonomous multi-step research bots, and heavy commercial deployment units with direct tool-use capabilities.</li>
+            <li><strong>Broad Definition (10⁸ / 100 Million Agents):</strong> Hypothetical broader population including localized micro-agents, short-lived specialized sub-agents dispatched by primary systems, workflow automations, and lower-autonomy browser-automation script wrappers.</li>
         </ul>
 
         <h3>2. Distortion Factors</h3>
         <ul>
-            <li><strong>Hidden Multiplier (M_hidden):</strong> Adjusts for non-public incidents. High-impact mistakes are frequently suppressed by enterprises due to legal, reputational, or financial liabilities. Many errors also silently hit target systems where they are simply discarded as standard network spam.</li>
-            <li><strong>Detection Delay Time (T_lag):</strong> The time lag between execution and human validation. For example, in the Anthropic Claude 4.5 Haiku test incident, the unprompted false police submission occurred weeks before it was uncovered in audit logs. In an exponentially growing ecosystem, today's detected events reflect yesterday's smaller baseline population.</li>
+            <li><strong>Hidden Multiplier (M_hidden):</strong> Adjusts for non-public incidents. The share of undisclosed events is unknown; the multiplier is not inferred from the databases linked below.</li>
+            <li><strong>Assumed Lag (T_lag):</strong> The lag slider is a modeling assumption. Manifold measures time from first action to public disclosure, which may include both detection and reporting delays. Its 70-day median cannot be treated as a measured detection lag.</li>
         </ul>
 
         <h3>3. Incident Categorization</h3>
         <ul>
-            <li><strong>Agent-Incidents vs. Action-Incidents:</strong> A single agent executes thousands of individual operations daily. While <em>Action-Incidents</em> calculate the probability of failure per single API request or click, this model focuses on <strong>Agent-Incidents</strong>—the probability that an active agent will trigger at least one catastrophic systemic outcome over a multi-step sequence per year.</li>
-            <li><strong>Risk Profile:</strong> These events fall into the <strong>Low-Probability, High-Impact</strong> spectrum. While they rarely occur on a per-interaction scale, their systemic blast radius represents severe black-swan risks.</li>
+            <li><strong>Agent-Incidents vs. Action-Incidents:</strong> A single agent executes thousands of individual operations daily. While <em>Action-Incidents</em> calculate the probability of failure per single API request or click, this model focuses on <strong>Agent-Incidents</strong>—a rough incident-count-to-population ratio. Without a defined time window and unique affected-agent counts, it is not the probability of an agent causing at least one incident.</li>
+            <li><strong>Risk Profile:</strong> These events fall into the <strong>Low-Probability, High-Impact</strong> spectrum. Potentially severe outcomes are the focus; this tool does not establish their frequency.</li>
         </ul>
 
         <h3>4. Mathematical Formulas Utilized</h3>
-        <p>To calculate the true current volume of incidents adjusted for growth during the latency window:</p>
-        <div class="formula-block">I_true = I_known × M_hidden × (1 + g)^T_lag</div>
+        <p>To apply a hypothetical growth factor to an incident count:</p>
+        <div class="formula-block">I_scenario = I_known × M_hidden × (1 + g)^T_lag</div>
         
         <p>To compute the modeled incidence against the active agent base (not annualized without a defined observation period):</p>
-        <div class="formula-block">Incidence Rate = I_true / N_agents</div>
+        <div class="formula-block">Scenario Ratio = I_scenario / N_agents</div>
+      <h3>5. Public incident sources (checked 31 October 2026)</h3>
+      <ul>
+        <li><a href="https://www.manifold.security/incidents" target="_blank" rel="noopener noreferrer">Manifold — Agent Incident Ledger</a>: 59 publicly disclosed incidents; 70-day median time to <em>public disclosure</em> among 43 cases with both dates. The ledger includes various agent failure types, not only confirmed high-impact harms.</li>
+        <li><a href="https://github.com/Continuum-AI-Corp/Orca-AI-Incident-Archive" target="_blank" rel="noopener noreferrer">Orca AI Incident Archive</a>: 407 security-event records, of which 146 report a confirmed victim. Includes incidents, vulnerability disclosures, research demonstrations and other event types.</li>
+        <li><a href="https://www.stupidllm.com/" target="_blank" rel="noopener noreferrer">StupidLLM</a>: 140 documented AI coding-agent failures of varying severity; not a global high-impact incident count.</li>
+        <li><a href="https://oecd.ai/en/incidents" target="_blank" rel="noopener noreferrer">OECD AI Incidents Monitor</a>: broader AI incidents and hazards, not specific to autonomous agents.</li>
+      </ul>
+      <p><strong>Important:</strong> These collections overlap, use different inclusion criteria, and do not establish the number of unreported incidents. Their totals must not be added together. The 59-case option is a broader-source scenario, not a verified count of severe incidents.</p>
+      <p><strong>Model limitation:</strong> Multiplying cumulative observed incidents by a growth factor is a heuristic, not a statistically derived correction for reporting lag. An actual incidence rate would require a consistent incident definition, observation period, exposure denominator and reporting model.</p>
     </div>
 </div>
 
@@ -248,8 +267,14 @@
         output('res-trueIncidentsRaw', formatter.format(raw));
         output('res-trueIncidentsTime', formatter.format(corrected));
         output('res-incidenceRate', `${(incidence * 100).toFixed(6)}%`);
-        output('res-ratio', incidence > 0 ? `1 out of ${formatter.format(1 / incidence)} agents` : 'N/A');
+        output('res-ratio', incidence > 0 ? `1 incident per ${formatter.format(1 / incidence)} assumed agents` : 'N/A');
     }
+    const scenario = document.getElementById('scenario');
+    scenario.addEventListener('change', () => {
+        if (scenario.value !== 'custom') fields.knownIncidents.value = scenario.value;
+        update();
+    });
+    fields.knownIncidents.addEventListener('input', () => { scenario.value = 'custom'; });
     ids.forEach(id => fields[id].addEventListener('input', update));
     update();
 })();
